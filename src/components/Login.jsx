@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form"
 import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
+import { Link } from "react-router-dom";
 const Login = () => {
   const [authUser, setAuthUser] = useAuth()
     const {
@@ -57,7 +58,7 @@ const Login = () => {
                     </div>
                     <div className=" flex mt-4 items-center space-x-3 justify-around">
                         <h2 className="text-xl">New User?</h2>
-                        <h2 className="text-blue-400 underline cursor-pointer hover:scale-125">Signup</h2>
+                        <Link to="/signup" className="text-blue-400 underline cursor-pointer hover:scale-125">Signup</Link>
                         <button className="btn btn-accent text-white bg-green-500 text-xl cursor-pointer hover:bg-green-800">Login</button>
                     </div>
                 </div>
