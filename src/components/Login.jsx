@@ -1,11 +1,35 @@
 import { useForm } from "react-hook-form"
+import axios from "axios";
+import { useAuth } from "../context/AuthProvider";
 const Login = () => {
+  const [authUser, setAuthUser] = useAuth()
     const {
             register,
             handleSubmit,
             formState: { errors },
           } = useForm()
-          const onSubmit = (data) => console.log(data)
+          const onSubmit = async (data) => {
+            const userInfo = {
+              email: data.email,
+              password: data.password,
+            };
+
+          await axios
+          .post("http://localhost:3000/api/v1/users/login", userInfo)
+          .then((response) => {
+            if(response.data) {
+                alert("Login Successful");
+            }
+           localStorage.setItem("ChatApp", JSON.stringify(response.data))
+           setAuthUser(response.data)
+          })
+          .catch((error) => {
+            console.log(error);
+            if(error.response) {
+                alert("Error: "+error.response.data.error)
+            }
+          });
+        }
   return (
     <div className="bg-gray-800 h-screen text-white flex items-center justify-center">
         <div className="w-[500px]  border rounded-xl">
@@ -20,16 +44,16 @@ const Login = () => {
                     <div className="py-4">
                         <input 
                         type="text"
-                        {...register("Email", { required: true })} 
+                        {...register("email", { required: true })} 
                          className="bg-transparent border w-full px-2 py-4 rounded-xl " placeholder="Email . . . ." />
-                         {errors.Email && <span className="text-red-500">This field is required</span>}
+                         {errors.email && <span className="text-red-500">This field is required</span>}
                     </div>
                     <div className="py-4">
                         <input
                          type="text"
-                         {...register("Password", { required: true })} 
+                         {...register("password", { required: true })} 
                           className="bg-transparent border w-full px-2 py-4 rounded-xl " placeholder="password . .  . . " />
-                          {errors.Password && <span className="text-red-500">This field is required</span>}
+                          {errors.password && <span className="text-red-500">This field is required</span>}
                     </div>
                     <div className=" flex mt-4 items-center space-x-3 justify-around">
                         <h2 className="text-xl">New User?</h2>
